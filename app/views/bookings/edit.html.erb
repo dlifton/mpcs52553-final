@@ -1,0 +1,29 @@
+<div class="page-header">
+  <h1>Edit Reservation #<%= params[:id] %></h1>
+</div>
+
+<% if  @booking.errors.full_messages.any? %>
+    <ul class="text-danger">
+      <% @booking.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+      <% end %>
+    </ul>
+<% end %>
+
+<div class="row">
+  <div class="col-sm-4">
+    <h4>Changing Booking Date For <%= @booking.chef.name %></h4>
+
+    <%= form_tag("/bookings/#{@booking.id}", method: 'patch') do  %>
+        <div class="form-group">
+          <%= label_tag :date, "Date", class: "cols-sm-2 control-label" %>
+          <%= text_field_tag :date, nil , autofocus: true, class: 'form-control', id: 'datepicker'%>
+        </div>
+        <%= hidden_field_tag 'chef_id', @booking.chef.id %>
+        <div class="form-group ">
+          <%= submit_tag 'Change Booking Now', class: 'btn btn-primary btn-lg btn-block login-button'%>
+        </div>
+    <% end %>
+
+  </div>
+</div>

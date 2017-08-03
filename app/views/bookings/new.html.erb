@@ -1,0 +1,67 @@
+<div class="page-header">
+  <h1>Place Reservation</h1>
+</div>
+
+<% if @booking.errors.any? %>
+    <div class="alert alert-danger">
+      <ul>
+        <% @booking.errors.full_messages.each do |msg| %>
+            <li><strong><%= msg %></strong> </li>
+        <% end %>
+      </ul>
+    </div>
+<% end %>
+
+<div class="row">
+  <!-- Product Thumbnail -->
+  <div class="col-sm-6 col-md-3">
+    <div class="thumbnail">
+
+      <% photo_url = @booking.chef.photo_url %>
+      <% if photo_url.blank? %>
+          <%   photo_url = "http://via.placeholder.com/350x350?text=no+photo" %>
+      <% end %>
+
+      <%= link_to image_tag(photo_url),
+                  "/chefs/#{@booking.chef.id}",
+                  alt: "Echo Dot", class: 'img-responsive' %>
+
+      <div class="caption">
+        <h4><%= link_to @booking.chef.name, "/chefs/#{@booking.chef.id}"%></h4>
+        <% @booking.chef.reviews.average(:rating).to_i.times do |n| %>
+            &bigstar;
+        <% end %>
+        <% (5 - @booking.chef.reviews.average(:rating).to_i).times do |n| %>
+            &star;
+        <% end %>
+        <p><%= @booking.chef.reviews.count %> reviews.</p>
+        <p>Cuisine: <%= link_to @booking.chef.cuisine, '#' %></p>
+
+        <p>
+          <%= truncate @booking.chef.name, length: 40 %>
+          <%= link_to "[see more]", '/chefs/#{@booking.chef.id}' %>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Payment Details -->
+
+  <div class="col-sm-6 col-md-3">
+
+    <h4>Book <%= @booking.chef.name %></h4>
+
+    <%= form_tag('/bookings', method: 'post', class: 'form-horizontal') do  %>
+        <div class="form-group">
+          <%= label_tag :date, "Date", class: "cols-sm-2 control-label" %>
+          <%= text_field_tag :date, nil , autofocus: true, class: 'form-control', id: 'datepicker'%>
+        </div>
+        <%= hidden_field_tag 'chef_id', @booking.chef.id %>
+        <div class="form-group ">
+          <%= submit_tag 'Book now', class: 'btn btn-primary btn-lg btn-block login-button'%>
+        </div>
+    <% end %>
+
+  </div>
+</div>
+

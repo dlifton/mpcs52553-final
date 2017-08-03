@@ -1,0 +1,59 @@
+<div class="page-header">
+  <h1>Featured Chefs</h1>
+</div>
+
+<!-- Search by cuisine -->
+<div class = 'container'>
+  <div class="row">
+    <div class = "col-sm-12">
+      <div class="form-group">
+      <%= form_tag('/chefs', method: 'get', class: 'form-horizontal') do  %>
+            <%= label_tag :cuisine, "Search by cuisine" %>
+            <%= select("cuisine", "name", @cuisines) %>
+            <%= submit_tag "search", :name => nil, :class => 'btn btn-default' %>
+      <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <% @chefs.each do |c| %>
+
+      <!-- Product Thumbnail -->
+      <div class="col-sm-6 col-md-3">
+        <div class="thumbnail">
+
+          <% photo_url = c.photo_url %>
+          <% if photo_url.blank? %>
+              <%   photo_url = "http://via.placeholder.com/350x350?text=no+photo" %>
+          <% end %>
+
+          <%= link_to image_tag(photo_url),
+                      "/chefs/#{c.id}",
+                      alt: "Echo Dot", class: 'img-responsive'%>
+
+          <div class="caption">
+            <h4><%= link_to c.name, "/chefs/#{c.id}"%></h4>
+            <% c.reviews.average(:rating).to_i.times do |n| %>
+                &bigstar;
+            <% end %>
+            <% (5 - c.reviews.average(:rating).to_i).times do |n| %>
+                &star;
+            <% end %>
+            <p><%= c.reviews.count %> reviews.</p>
+            <p>Cuisine: <%= link_to c.cuisine, '#' %></p>
+
+            <p>
+              <%= truncate c.name, length: 40 %>
+              <%= link_to "[see more]", "/chefs/#{c.id}" %>
+            </p>
+            <p><a href="/bookings/new?chef_id=<%= c.id %>" class="btn btn-primary" role="button">Book Now</a>
+            </p>
+          </div>
+        </div>
+
+      </div>
+
+  <% end %>
+</div>

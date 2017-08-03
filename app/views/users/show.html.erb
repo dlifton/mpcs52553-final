@@ -1,0 +1,40 @@
+<div class="page-header">
+  <h1>My Account</h1>
+</div>
+
+<div class="row">
+  <div class="col-sm-6">
+
+    <p>
+      <strong>Name:</strong> <%= @user.name %>
+    </p>
+
+    <p>
+      <strong>Email Address:</strong> <%= @user.email %>
+    </p>
+
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-sm-12">
+
+    <h3> Bookings </h3>
+
+    <% @bookings.each do |booking| %>
+        <div class="col-sm-4">
+          <div class="media-body">
+            <h4 class="media-heading"><%= booking.chef.name %></h4>
+            <%= booking.booking_date_time %>
+          </div>
+
+          <p>
+            <%= link_to 'Edit Reservation' , "/bookings/#{booking.id}/edit"%>
+            <%= link_to 'Delete Reservation' , "/bookings/#{booking.id}", method: 'delete' %>
+          </p>
+        </div>
+    <% end %>
+    </div>
+
+  </div>
+</div>
