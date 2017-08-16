@@ -27,7 +27,7 @@ class FoodsController < ApplicationController
     else
       food = Food.find_by(id: params['id'])
       food.delete
-      render 'menus/addItems', :menu_id => params['menu_id']
+      render 'menus/addItems', :locals => { :menu_id => params['menu_id']}
     end
   end
 end
