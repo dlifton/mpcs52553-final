@@ -45,9 +45,19 @@
 User
   name: text
   email: text
+  address: text
+  phone: text
+  photo_url: text
   password_digest: text
+  role: text
+  cuisine: text
+  description: text
   created_at: datetime
   updated_at: datetime
+  avatar_file_name: string
+  avatar_content_type: string
+  avatar_file_size: integer
+  avatar_updated_at: datetime
 
 Chef
   name: text
@@ -65,13 +75,19 @@ Menu
   user_id: integer
   price: integer
   title: text
-  photo_url: text
+  cuisine: text
   description: text
   created_at: datetime
   updated_at: datetime
+  menuimage_file_name: string
+  menuimage_content_type: string
+  menuimage_file_size: integer
+  menuimage_updated_at: datetime
 
 Review
+  user_id: integer
   chef_id: integer
+  menu_id: integer
   rating: integer
   content: text
   created_at: datetime
@@ -79,6 +95,18 @@ Review
 Booking
   chef_id: integer
   user_id: integer
-  booking_date_time: datetime
+  date: date
+  time: time
+  address: text
   created_at: datetime
   updated_at: datetime
+
+Food
+  user_id: integer
+  menu_id: integer
+  title: string
+  description: string
+  foodimage_file_name: string
+  foodimage_content_type: string
+  foodimage_file_size: integer
+  foodimage_updated_at: datetime

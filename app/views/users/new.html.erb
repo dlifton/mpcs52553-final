@@ -21,8 +21,13 @@
       <%= label_tag :password, "Pick a Password" %>
       <%= text_field_tag :password, "", class: 'form-control' %>
     </div>
+        <div class = "form-group">
+          <%= label_tag :role, "Pick a User" %>
+          <%= select_tag(:role, '<option>Customer</option><option>Chef</option>'.html_safe,
+                         {:class => 'form-control'}) %>
+        </div>
 
-    <%= submit_tag "Sign Me Up", class: 'btn btn-success btn-lg'%>
+    <%= submit_tag "Sign Me Up", class: 'btn btn-default'%>
     or
     <%= link_to "Cancel", root_url %>
 

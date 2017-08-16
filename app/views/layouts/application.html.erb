@@ -2,6 +2,7 @@
 <html>
 <head>
   <title>DineIn</title>
+
   <%= csrf_meta_tags %>
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -18,9 +19,13 @@
 
   <script>
       $( function() {
-          $( "#datepicker" ).datepicker();
+          $('#datepicker').datepicker({ dateFormat: 'yy-mm-dd' }).val();
       } );
   </script>
+
+
+
+
 </head>
 
 <body>

@@ -1,3 +1,4 @@
+<div class="container">
 <div class="row">
   <div class="col-sm-6">
     <div class="page-header">
@@ -14,35 +15,21 @@
     </div>
   </div>
     <div class="col-sm-6">
-      <div class="page-header">
-        <p>
+      <br><br><br>
           <a href="/bookings/new?chef_id=<%= @chef.id %>" class="btn btn-primary" role="button">Place Reservation</a>
-        </p>
-      </div>
     </div>
+</div>
 </div>
 
 <div class="row">
   <div class="col-sm-4">
-
-    <% photo_url = @chef.photo_url %>
-    <% if photo_url.blank? %>
-        <%   photo_url = "http://via.placeholder.com/350x350?text=no+photo" %>
-    <% end %>
-
-    <%= image_tag photo_url,
-                  class: 'img-responsive' %>
-    <p><a href="/bookings/new?chef_id=<%= @chef.id %>" class="btn btn-primary" role="button">Book Now</a>
+    <%= image_tag @chef.avatar.url(:medium), class: 'img-circle' %>
   </div>
-
   <div class="col-sm-8">
-
     <p>
       <h4>Cuisine: <%= @chef.cuisine %></h4>
       <h5>Bio: <%= @chef.description %></h5>
     </p>
-
-    <hr>
 
     <% if session["user_id"].present? %>
         <%= form_tag("/reviews", method: 'post') do %>

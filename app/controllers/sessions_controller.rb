@@ -9,6 +9,7 @@ class SessionsController < ApplicationController
       if u.authenticate(params["password"])
         # cookies["user_id"] = u.id
         session["user_id"] = u.id
+        session["user_type"] = params['user']
         redirect_to "/", notice: "Welcome back, #{u.name}!"
       else
         redirect_to "/sessions/new", alert: "Bad password"

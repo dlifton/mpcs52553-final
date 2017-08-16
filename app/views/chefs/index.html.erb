@@ -1,22 +1,22 @@
+<div class="row">
+    <div class="col-sm-9">
+      <%= form_tag('/chefs', method: 'get', class: 'form-inline') do  %>
+          <div class="form-group">
+            <%= text_field_tag :date, nil , class: 'form-control', id: 'datepicker', placeholder: "Enter date"%>
+          </div>
+          <div class="form-group">
+            <%= select_tag(:cuisine, options_for_select(User.all.collect(&:cuisine).uniq),
+                           {:class => 'form-control', :include_blank => 'All Cuisines'}) %>
+          </div>
+          <%= submit_tag "Search", class: 'btn btn-default'%>
+      <% end %>
+    </div>
+</div>
+
+
 <div class="page-header">
   <h1>Featured Chefs</h1>
 </div>
-
-<!-- Search by cuisine -->
-<div class = 'container'>
-  <div class="row">
-    <div class = "col-sm-12">
-      <div class="form-group">
-      <%= form_tag('/chefs', method: 'get', class: 'form-horizontal') do  %>
-            <%= label_tag :cuisine, "Search by cuisine" %>
-            <%= select("cuisine", "name", @cuisines) %>
-            <%= submit_tag "search", :name => nil, :class => 'btn btn-default' %>
-      <% end %>
-      </div>
-    </div>
-  </div>
-</div>
-
 <div class="row">
   <% @chefs.each do |c| %>
 
@@ -24,10 +24,7 @@
       <div class="col-sm-6 col-md-3">
         <div class="thumbnail">
 
-          <% photo_url = c.photo_url %>
-          <% if photo_url.blank? %>
-              <%   photo_url = "http://via.placeholder.com/350x350?text=no+photo" %>
-          <% end %>
+          <% photo_url = c.avatar.url %>
 
           <%= link_to image_tag(photo_url),
                       "/chefs/#{c.id}",
@@ -57,3 +54,4 @@
 
   <% end %>
 </div>
+<%= paginate @chefs %>

@@ -7,6 +7,9 @@ end
 
 # 'ez' gem provides simpler database management and rails console experience.
 # Not intended for real-life production environments!
+gem 'kaminari'
+gem "paperclip", "~> 5.0.0"
+gem 'pickadate-rails'
 gem 'mini_magick'
 gem 'simple_form'
 gem 'jquery-rails'

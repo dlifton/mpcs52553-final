@@ -7,34 +7,61 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 
 # Reset the 'chefs' table
-Chef.delete_all
+User.delete_all
+i = 0
+15.times do
+  fileName = i.to_s + '.jpg'
+  chef = User.create name: ['Mark Twain','Sylvia Plath','Clark Kent', 'Guy Fieri', 'Ronald Mcdonald'].sample,
+                     email: 'marktwain@gmail.com',
+                     :avatar => File.open("app/assets/images/ChefImages/#{fileName}", 'rb'),
+                     role: 'Chef', address: '2222 East 51rd Street, Chicago, IL 60615',
+                     cuisine: ['Chinese', 'American', 'Israeli', 'Mexican', 'Ethiopian'].sample,
+                     phone: '8888888888', password: 'password', description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna'
+  i = i + 1
+end
 
-chef = Chef.create name: 'Mark Twain', email: 'marktwain@gmail.com',
-                    photo_url: 'http://media.safebee.com/assets/images/2015/4/chef%20tips.jpg.838x0_q67_crop-smart.jpg',
-                   address: '2222 East 51rd Street, Chicago, IL 60615', cuisine: 'American',
-                   phone: '8582222222', password: 'dandan94', description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna'
+# Create Menus for Chefs
+Menu.delete_all
 
-chef = Chef.create name: 'Sylvia Plath', email: 'sylplath@gmail.com',
-                   photo_url: 'http://i.huffpost.com/gen/1282658/images/h-FEMALE-CHEF-628x314.jpg',
-                   address: '2222 East 51rd Street, Chicago, IL 60615', cuisine: 'Chinese',
-                   phone: '8582222222', password: 'dandan94', description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna'
-
-chef = Chef.create name: 'Clark Kent', email: 'clarkkent@gmail.com',
-                   photo_url: 'http://www.getfitgofigure.com/wp-content/uploads/2015/08/chef.png',
-                   address: '2222 East 51rd Street, Chicago, IL 60615', cuisine: 'Chinese',
-                   phone: '8582222222', password: 'dandan94', description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna'
-
+range = (1..120).to_a
+User.all.each do |chef|
+  4.times do
+    fileName = range.sample.to_s + '.jpg'
+    menu =  Menu.create(:menuimage => File.open("app/assets/images/MenuImages/#{fileName}", 'rb'),
+                        :user => User.find_by(id: chef.id),
+                        :title => ['All-Star Meal','Lions’ Lunch','Peoples’ Choice','The Chefs Feast','Popeye’s Pick'].sample,
+                        :cuisine => ['Chinese', 'American', 'Israeli', 'Mexican', 'Ethiopian'].sample,
+                        :price => range.sample)
+  end
+end
 
 # Reset the 'reviews' table
 Review.delete_all
-
-Chef.all.each do |chef|
+User.all.each do |chef|
   4.times do
-    review = Review.create chef_id: chef.id,
+    review = Review.create user_id: chef.id,
                   rating: [1,2,3,4,5].sample,
                   content: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
   end
 end
 
-puts "#{Chef.count} chefs."
+range = (1..90).to_a
+Menu.all.each do |menu|
+  4.times do
+    review = Review.create menu_id: menu.id,
+                           user_id: menu.user.id,
+                           rating: [1,2,3,4,5].sample,
+                           content: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+
+    fileName = range.sample.to_s + '.jpg'
+    food = Food.create menu_id: menu.id, user_id: menu.user.id,
+                       :foodimage => File.open("app/assets/images/FoodImages/#{fileName}", 'rb'),
+                       title: "Food Title",
+                       description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+  end
+end
+
+puts "#{User.count} chefs."
 puts "#{Review.count} reviews."
+puts "#{Menu.count} menus."
+puts "#{Food.count} foods."

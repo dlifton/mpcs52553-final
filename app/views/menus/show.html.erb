@@ -1,0 +1,98 @@
+<!-- Main Info -->
+<div class="container">
+  <div class="row">
+    <div class="col-sm-8">
+      <div class="page-header">
+        <h1><%= @menu.title %> By <%= @menu.user.name %>
+          <small class="rating">
+            <% @menu.reviews.average(:rating).to_i.times do |n| %>
+                &bigstar;
+            <% end %>
+            <% (5 - @menu.reviews.average(:rating).to_i).times do |n| %>
+                &star;
+            <% end %>
+          </small>
+        </h1>
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <br><br><br>
+      <a href="/bookings/new?chef_id=<%= @menu.user.id %>" class="btn btn-primary" role="button">Place Reservation</a>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <!-- Main image -->
+  <div class="col-sm-4">
+    <%= image_tag @menu.menuimage.url(:medium) %>
+  </div>
+
+  <div class="col-sm-8">
+
+    <p>
+    <h4>Cuisine: <%= @menu.cuisine %></h4>
+    <h5>Menu Descriptinpn: <%= @menu.description %></h5>
+    </p>
+
+    <!-- Show food items -->
+    <% foods = @menu.foods %>
+    <h3> Food Items </h3>
+    <table class="table">
+      <thead>
+      <tr>
+        <th>Item Name</th>
+        <th>Food Image</th>
+        <th>Description</th>
+      </tr>
+      </thead>
+      <tbody>
+      <% foods.each do |food| %>
+          <tr>
+            <td><%= food.title %></td>
+            <td>
+              <%=link_to image_tag(food.foodimage.url(:thumb)), food.foodimage.url(:medium),
+                         :popup=>['medium image', 'height=700,width=900'] %>
+            </td>
+            <td><%= food.description %></td>
+          </tr>
+      <% end %>
+      </tbody>
+    </table>
+    <% if session["user_id"].present? %>
+        <%= form_tag("/reviews", method: 'post') do %>
+            <%= hidden_field_tag :product_id, @menu.id %>
+            <h3>Add Your Review</h3>
+            <p>
+              <%= label_tag :rating %>
+              <%= select_tag :rating, options_for_select([1,2,3,4,5]), prompt: "Select 1 to 5...", class: '' %>
+            </p>
+            <p><%= text_area_tag :content, "", rows: 3, class: 'form-control' %></p>
+            <%= submit_tag "Submit", class: 'btn btn-primary' %>
+        <% end %>
+    <% else %>
+        <p><%= link_to "Sign in to write a review", '/sessions/new' %></p>
+    <% end %>
+
+    <hr>
+    <h3>Reviews</h3>
+
+    <% @menu.reviews.each do |review| %>
+        <p>
+          <% review.rating.to_i.times do |n| %>
+              &bigstar;
+          <% end %>
+          <% (5 - review.rating.to_i).times do |n| %>
+              &star;
+          <% end %>
+        </p>
+        <p>
+          <%= review.content %>
+        </p>
+    <% end %>
+
+  </div>
+
+</div>
+</body>
+</html>

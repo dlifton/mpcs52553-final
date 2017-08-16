@@ -9,6 +9,8 @@ Rails.application.routes.draw do
   resources :sessions
   resources :menus
   resources :bookings
+  resources :posts
+  resources :foods
 
 
 end

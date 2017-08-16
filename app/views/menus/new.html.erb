@@ -1,37 +1,45 @@
 <div class="page-header">
-  <h1>Sell Your Stuff</h1>
+  <h1>Create Menu - Step 1</h1>
 </div>
 
 <div class="row">
   <div class="col-sm-4">
-
-    <%= form_tag('/menus', method: 'post') do  %>
+    <%= form_for :menu, url: '/menus'  do |f| %>
 
         <div class="form-group">
-          <%= label_tag :title, "Product Title" %>
-          <%= text_field_tag :title, @chef.title, autofocus: true, class: 'form-control' %>
+          <%= label_tag :title, "Menu Title" %>
+          <%= text_field_tag :title, '', autofocus: true, class: 'form-control' %>
         </div>
 
         <div class="form-group">
-          <%= label_tag :photo_url, "Link to Image or Photo" %>
-          <%= text_field_tag :photo_url, @chef.photo_url, class: 'form-control' %>
+          <%= label_tag :price, "Set The Price" %>
+          <%= text_field_tag :price, '', class: 'form-control' %>
         </div>
 
         <div class="form-group">
-          <%= label_tag :price, "Set Your Price" %>
-          <%= text_field_tag :price, (@chef.price.to_f / 100.0).to_s, class: 'form-control' %>
+          <%= label_tag :cuisine, "Cuisine Type" %>
+          <%= text_field_tag :cuisine, '', class: 'form-control' %>
         </div>
 
         <div class="form-group">
-          <%= label_tag :description, "Describe the item you're trying to sell" %>
-          <%= text_area_tag :description, @chef.description, rows: 5, class: 'form-control' %>
+          <div class="field">
+            <%= label_tag :menuimage, 'Menu Image' %>
+            <%= f.file_field :menuimage %>
+          </div>
         </div>
 
-        <%= submit_tag "Create Item", class: 'btn btn-success btn-lg'%>
+
+        <div class="form-group">
+          <%= label_tag :description, "Describe The Menu" %>
+          <%= text_area_tag :description, '', rows: 5, class: 'form-control' %>
+        </div>
+
+        <%= submit_tag "Next", class: 'btn btn-primary btn-lg'%>
         or
-        <%= link_to "Cancel", "/products" %>
+        <%= link_to "Cancel", "/chefs" %>
 
     <% end %>
 
   </div>
 </div>
+<br>

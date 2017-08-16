@@ -1,0 +1,42 @@
+<div class="page-header">
+  <h1>Featured Menus</h1>
+</div>
+
+<div class="row">
+  <% @menus.each do |m| %>
+
+      <!-- Product Thumbnail -->
+      <div class="col-sm-6 col-md-3">
+        <div class="thumbnail">
+
+          <% photo = m.menuimage.url %>
+          <%= link_to image_tag(photo),
+                      "/menus/#{m.id}",
+                      alt: "Echo Dot", class: 'img-responsive'%>
+
+          <div class="caption">
+            <h4><%= link_to m.title, "/menus/#{m.id}"%></h4>
+            <% m.reviews.average(:rating).to_i.times do |n| %>
+                &bigstar;
+            <% end %>
+            <% (5 - m.reviews.average(:rating).to_i).times do |n| %>
+                &star;
+            <% end %>
+            <p><%= m.reviews.count %> reviews.</p>
+            <p>Cuisine: <%= link_to m.cuisine, '#' %></p>
+
+            <p>
+              <%= truncate m.title, length: 40 %>
+              <%= link_to "[see more]", "/menus/#{m.id}" %>
+            </p>
+            <p><a href="/bookings/new?chef_id=<%= m.id %>" class="btn btn-primary" role="button">Book Now</a>
+            </p>
+          </div>
+        </div>
+
+      </div>
+
+  <% end %>
+</div>
+
+<%= paginate @menus %>

@@ -2,6 +2,7 @@
   <h1>My Account</h1>
 </div>
 
+<!-- User info -->
 <div class="row">
   <div class="col-sm-6">
 
@@ -13,28 +14,84 @@
       <strong>Email Address:</strong> <%= @user.email %>
     </p>
 
-  </div>
-</div>
+    <p>
+      <strong>Role:</strong> <%= @user.role %>
+    </p>
 
-<div class="row">
-  <div class="col-sm-12">
-
+    <!-- Booking Table Info -->
     <h3> Bookings </h3>
-
+    <table class="table">
+      <thead>
+      <tr>
+        <th>Chef Name</th>
+        <th>Date</th>
+        <th>Options</th>
+      </tr>
+      </thead>
+      <tbody>
     <% @bookings.each do |booking| %>
-        <div class="col-sm-4">
-          <div class="media-body">
-            <h4 class="media-heading"><%= booking.chef.name %></h4>
-            <%= booking.booking_date_time %>
-          </div>
-
-          <p>
-            <%= link_to 'Edit Reservation' , "/bookings/#{booking.id}/edit"%>
-            <%= link_to 'Delete Reservation' , "/bookings/#{booking.id}", method: 'delete' %>
-          </p>
-        </div>
+          <% chef = User.find_by(id: booking.chef_id) %>
+          <tr>
+            <td><%= chef.name %></td>
+            <td><%= booking.date %></td>
+            <td>
+              <%= link_to 'Edit Reservation' , "/bookings/#{booking.id}/edit"%>
+              <%= link_to 'Delete Reservation' , "/bookings/#{booking.id}", method: 'delete' %>
+            </td>
+          </tr>
     <% end %>
-    </div>
+      </tbody>
+    </table>
 
+    <br>
+    <!-- Show Menu Info If Chef -->
+    <% if @user.role == 'Chef' %>
+        <h3> Menus </h3>
+        <table class="table">
+          <thead>
+          <tr>
+            <th>Menu Name</th>
+            <th>View Menu</th>
+            <th>Edit Menu</th>
+            <th>Delete Menu</th>
+          </tr>
+          </thead>
+          <tbody>
+          <% @menus.each do |menu| %>
+              <tr>
+                <td><%= menu.title %></td>
+                <td> <%= link_to 'View Menu' , "/menus/#{menu.id}"%> </td>
+                <td>  <%= link_to 'Edit Menu' , "/menus/#{menu.id}/edit"%> </td>
+                <td> <%= link_to 'Delete Menu' , "/menus/#{menu.id}", method: 'delete' %> </td>
+              </tr>
+          <% end %>
+          </tbody>
+        </table>
+        <%= link_to "Create New Menu" , new_menu_path, class: 'btn btn-default' %>
+    <% end %>
+  </div>
+
+  <!-- Image show and upload -->
+  <div class="col-sm-6">
+      <% photo_url = @user.avatar.url(:medium) %>
+      <% if photo_url.blank? %>
+          <%   photo_url = "http://americanmuslimconsumer.com/wp-content/uploads/2013/09/blank-user.jpg" %>
+      <% end %>
+      <%= image_tag photo_url, class:"img-circle" %>
+      <br>
+      <div class="form-group">
+        <%= form_for @user, url: user_path(@user), html: { multipart: true} do |f| %>
+            <div class="field">
+              <%= f.label :avatar %>
+              <%= f.file_field :avatar %>
+            </div>
+            </div>
+            <div class="form-group">
+              <div class="actions">
+                <%= submit_tag "Upload" , class: 'btn btn-default' %>
+              </div>
+            </div>
+        <% end %>
   </div>
 </div>
+<br>
